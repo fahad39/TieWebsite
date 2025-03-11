@@ -2,7 +2,7 @@ import mongoose, { model, Schema, models } from "mongoose";
 
 const AdminSchema = new Schema(
   {
-    Email: { type: String, required: true },
+    email: { type: String, required: true },
   },
   {
     timestamps: true,

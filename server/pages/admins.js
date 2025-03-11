@@ -1,13 +1,48 @@
 import Layout from "@/components/Layout";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 function admins() {
   const [email, setEmail] = useState("");
+  const [adminList, setAdminList] = useState([]);
+  useEffect(() => {
+    getAdmin();
+  }, []);
+
+  const getAdmin = () => {
+    axios.get("/api/admin").then((response) => {
+      // console.log(response.data);
+      setAdminList(response.data);
+    });
+  };
+
+  const addAdmin = async (e) => {
+    try {
+      e.preventDefault();
+      // console.log("inside addAdmin: ", email);
+      const data = { email };
+      const response = await axios.post("/api/admin", data);
+      // console.log("success", response);
+      setEmail("");
+    } catch (error) {
+      console.log("addAdmin: ", error);
+    }
+  };
+
+  const removeAdmin = async (id) => {
+    try {
+      const response = await axios.delete("/api/admins?id=" + id);
+      getAdmin();
+    } catch (error) {
+      console.log("addAdmin: ", error);
+    }
+  };
+
   return (
     <Layout>
       <h1>Admins</h1>
       <h2>Add New Admin</h2>
-      <form onSubmit={""}>
+      <form onSubmit={addAdmin}>
         <div className="flex items-center">
           <input
             type="text"
@@ -26,36 +61,19 @@ function admins() {
         <thead>
           <tr>
             <th>Email</th>
-            <th>Date Created</th>
+            <th>Remove</th>
             <th></th>
           </tr>
         </thead>
-        {/* <tbody>
-          {orders.length > 0 &&
-            orders.map((order) => (
-              <tr key={order._id}>
-                <td>{new Date(order.createdAt).toLocaleString()}</td>
-                <td className={order.paid ? "text-green-600" : "text-red-600"}>
-                  {order.paid ? "YES" : "NO"}
-                </td>
-                <td>
-                  {order.name} {order.email}
-                  <br />
-                  {order.city} {order.postalCode} {order.country}
-                  <br />
-                  {order.streetAddress}
-                </td>
-                <td>
-                  {order.line_items.map((l) => (
-                    <>
-                      {l.price_data?.product_data.name} x{l.quantity}
-                      <br />
-                    </>
-                  ))}
-                </td>
+        <tbody>
+          {adminList.length > 0 &&
+            adminList.map((admin) => (
+              <tr key={admin._id}>
+                <td>{admin.email}</td>
+                <td onClick={removeAdmin()}>Delete</td>
               </tr>
             ))}
-        </tbody> */}
+        </tbody>
       </table>
     </Layout>
   );
