@@ -2,8 +2,26 @@ import NextAuth, { getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
+import { mongooseConnect } from "@/lib/mongoose";
+import { Admins } from "@/models/Admins";
 
-const adminEmails = ["fahadhussain0127@gmail.com", "huccanefahad07@gmail.com"];
+// Get admin emails directly from mongoose model
+const fetchAdminEmails = async () => {
+  try {
+    await mongooseConnect();
+    const adminList = await Admins.find();
+    const adminEmails = adminList.map((admin) => admin.email);
+
+    // Add hardcoded email for backup access
+    adminEmails.push("fahadhussain0127@gmail.com");
+
+    return adminEmails;
+  } catch (error) {
+    console.error("Error fetching admin emails from database:", error);
+    // Fallback to hardcoded list in case of database issues
+    return ["fahadhussain0127@gmail.com"];
+  }
+};
 
 export const authOptions = {
   secret: process.env.SECRET,
@@ -15,10 +33,17 @@ export const authOptions = {
   ],
   adapter: MongoDBAdapter(clientPromise),
   callbacks: {
-    session: ({ session, token, user }) => {
-      if (adminEmails.includes(session?.user?.email)) {
-        return session;
-      } else {
+    session: async ({ session, token, user }) => {
+      try {
+        const adminEmails = await fetchAdminEmails(); // Fetch admin emails
+
+        if (adminEmails.includes(session?.user?.email)) {
+          return session;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.error("Error in session callback:", error);
         return false;
       }
     },
@@ -28,10 +53,17 @@ export const authOptions = {
 export default NextAuth(authOptions);
 
 export async function isAdminRequest(req, res) {
-  const session = await getServerSession(req, res, authOptions);
-  if (!adminEmails.includes(session?.user?.email)) {
-    res.status(401);
-    res.end();
-    throw "not an admin";
+  try {
+    const adminEmails = await fetchAdminEmails(); // Fetch admin emails
+
+    const session = await getServerSession(req, res, authOptions);
+    if (!adminEmails.includes(session?.user?.email)) {
+      res.status(401);
+      res.end();
+      throw "not an admin";
+    }
+  } catch (error) {
+    console.error("Error in isAdminRequest:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }

@@ -5,11 +5,12 @@ import { isAdminRequest } from "@/pages/api/auth/[...nextauth]";
 export default async function handle(req, res) {
   const { method } = req;
   const checkmongoose = await mongooseConnect();
-  console.log(checkmongoose, "Mongo connect");
+  // console.log(checkmongoose, "Mongo connect");
   await isAdminRequest(req, res);
 
   if (method === "GET") {
     try {
+      console.log("inside api");
       res.json(await Admins.find());
     } catch (error) {
       console.log("admin get api:", error);
