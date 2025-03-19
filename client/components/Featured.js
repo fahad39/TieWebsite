@@ -85,10 +85,7 @@ export default function Featured({ product }) {
             </div>
           </Column>
           <Column>
-            <img
-              src="https://tiewebsite.s3.amazonaws.com/1739980582936.jpg"
-              alt=""
-            />
+            <img src={product.images[0]} alt="Featured image" />
           </Column>
         </ColumnsWrapper>
       </Center>
