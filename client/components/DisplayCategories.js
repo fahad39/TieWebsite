@@ -33,6 +33,20 @@ const NavBox = styled(Link)`
   border-radius: 10px;
 `;
 
+const NoCatBox = styled.div`
+  color: #fff;
+  opacity: 0.7;
+  text-decoration: none;
+  background-color: grey;
+  padding: 20px;
+  height: 120px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+`;
+
 const StyledProductsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -54,20 +68,26 @@ export default function DisplayCategories({ title, _id = "", products = [] }) {
       </DisplayCategorydiv>
 
       <StyledProductsGrid>
-        {products.map((item) => (
-          <ProductBox
-            key={item._id}
-            _id={item._id}
-            title={item.title}
-            price={item.price}
-            images={item.images}
-          />
-        ))}
-        <NavBox href={url}>
-          <p className="categoryDetail">
-            Show All <i className="bi bi-arrow-right"></i>
-          </p>
-        </NavBox>
+        {products.length > 0 ? (
+          <>
+            {products.map((item) => (
+              <ProductBox
+                key={item._id}
+                _id={item._id}
+                title={item.title}
+                price={item.price}
+                images={item.images}
+              />
+            ))}
+            <NavBox href={url}>
+              <p className="categoryDetail">
+                Show All <i className="bi bi-arrow-right"></i>
+              </p>
+            </NavBox>
+          </>
+        ) : (
+          <NoCatBox>No Items</NoCatBox>
+        )}
       </StyledProductsGrid>
     </Center>
   );
