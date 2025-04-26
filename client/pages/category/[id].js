@@ -13,6 +13,7 @@ import CartIcon from "@/components/icons/CartIcon";
 import { useContext } from "react";
 import { CartContext } from "@/components/CartContext";
 import ProductsGrid from "@/components/ProductsGrid";
+import Footer from "@/components/Footer";
 
 const CategoryDescriptonStyled = styled.div`
   .filter-div {
@@ -65,6 +66,7 @@ export default function CategoryPage({ category, products }) {
         </div>
         <ProductsGrid products={filteredProducts} />
       </Center>
+      <Footer />
     </CategoryDescriptonStyled>
   );
 }

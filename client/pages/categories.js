@@ -6,6 +6,7 @@ import Title from "@/components/Title";
 import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
 import DisplayCategories from "@/components/DisplayCategories";
+import Footer from "@/components/Footer";
 
 const Categorydiv = styled.div`
   .noCategoryDiv {
@@ -36,6 +37,7 @@ export default function CategoriesPage({ categories }) {
           </>
         )}
       </Center>
+      <Footer />
     </>
   );
 }
