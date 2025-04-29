@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Center from "@/components/Center";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import axios from "axios";
 
 const AccountPageStyled = styled.div`
@@ -59,13 +59,26 @@ const AccountPageStyled = styled.div`
   .login-form button:hover {
     background-color: #555;
   }
+
+  .logout-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .logout-button:hover {
+    background-color: #555;
+  }
 `;
 
 export default function AccountPage() {
   const { data: session, status } = useSession();
   const [orders, setOrders] = useState([]);
 
-  console.log(session);
   useEffect(() => {
     if (session) {
       // Fetch orders for the logged-in user
@@ -107,6 +120,9 @@ export default function AccountPage() {
           <p>
             <strong>Email:</strong> {session.user.email}
           </p>
+          <button className="logout-button" onClick={() => signOut()}>
+            Logout
+          </button>
         </div>
         <div className="orders">
           <h2>Previous Orders</h2>
@@ -121,15 +137,36 @@ export default function AccountPage() {
                   {new Date(order.createdAt).toLocaleDateString()}
                 </p>
                 <p>
-                  <strong>Total:</strong> ${order.total}
+                  <strong>Name:</strong> {order.name}
+                </p>
+                <p>
+                  <strong>Street:</strong> {order.streetAddress}
+                </p>
+                <p>
+                  <strong>Postal Code:</strong> {order.postalCode}
+                </p>
+                <p>
+                  <strong>City:</strong> {order.city}
+                </p>
+                <p>
+                  <strong>Country:</strong> {order.country}
+                </p>
+                <p>
+                  <strong>Paid:</strong> {order.paid ? "True" : "False"}
                 </p>
                 <p>
                   <strong>Items:</strong>
                 </p>
                 <ul>
-                  {order.items.map((item) => (
-                    <li key={item.productId}>
-                      {item.name} - {item.quantity} x ${item.price}
+                  {order.line_items.map((item, index) => (
+                    <li key={index}>
+                      {item.price_data.product_data.name} - {item.quantity} x{" "}
+                      {item.price_data.currency === "USD"
+                        ? "$"
+                        : item.price_data.currency === "GBP"
+                        ? "£"
+                        : item.price_data.currency}{" "}
+                      {item.price_data.unit_amount}
                     </li>
                   ))}
                 </ul>
