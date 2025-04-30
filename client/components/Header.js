@@ -1,6 +1,5 @@
 import Link from "next/link";
 import styled from "styled-components";
-import Center from "@/components/Center";
 import { useContext, useState } from "react";
 import { CartContext } from "@/components/CartContext";
 import BarsIcon from "@/components/icons/Bars";
@@ -63,6 +62,11 @@ const NavButton = styled.button`
   @media screen and (min-width: 768px) {
     display: none;
   }
+`;
+const Center = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
 `;
 
 export default function Header() {
