@@ -74,6 +74,12 @@ const AccountPageStyled = styled.div`
     background-color: #555;
   }
 `;
+const StyledDiv = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 100vh;
+`;
 
 export default function AccountPage() {
   const { data: session, status } = useSession();
@@ -97,12 +103,12 @@ export default function AccountPage() {
     return (
       <AccountPageStyled>
         <Header />
-        <Center>
+        <StyledDiv>
           <div className="login-form">
             <h2>Login</h2>
             <button onClick={() => signIn()}>Sign In</button>
           </div>
-        </Center>
+        </StyledDiv>
         <Footer />
       </AccountPageStyled>
     );
@@ -111,7 +117,7 @@ export default function AccountPage() {
   return (
     <AccountPageStyled>
       <Header />
-      <Center>
+      <StyledDiv>
         <div className="account-details">
           <h2>Account Details</h2>
           <p>
@@ -174,7 +180,7 @@ export default function AccountPage() {
             ))
           )}
         </div>
-      </Center>
+      </StyledDiv>
       <Footer />
     </AccountPageStyled>
   );

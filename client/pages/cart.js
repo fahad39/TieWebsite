@@ -66,6 +66,12 @@ const CityHolder = styled.div`
   display: flex;
   gap: 5px;
 `;
+const StyledDiv = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 100vh;
+`;
 
 export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } =
@@ -126,21 +132,21 @@ export default function CartPage() {
     return (
       <>
         <Header />
-        <Center>
+        <StyledDiv>
           <ColumnsWrapper>
             <Box>
               <h1>Thanks for your order!</h1>
               <p>We will email you when your order will be sent.</p>
             </Box>
           </ColumnsWrapper>
-        </Center>
+        </StyledDiv>
       </>
     );
   }
   return (
     <>
       <Header />
-      <Center>
+      <StyledDiv>
         <ColumnsWrapper>
           <Box>
             <h2>Cart</h2>
@@ -246,7 +252,7 @@ export default function CartPage() {
             </Box>
           )}
         </ColumnsWrapper>
-      </Center>
+      </StyledDiv>
       <Footer />
     </>
   );
