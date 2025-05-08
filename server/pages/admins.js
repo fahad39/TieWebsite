@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-function admins() {
+function Admins() {
   const [email, setEmail] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [adminToDelete, setAdminToDelete] = useState(null);
@@ -141,4 +141,4 @@ function admins() {
   );
 }
 
-export default admins;
+export default Admins;

@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-function settings() {
+function Settings() {
   const [products, setProducts] = useState([]);
   const [featuredProductId, setFeaturedProductId] = useState("");
   const [featuredProductPrice, setFeaturedProductPrice] = useState("");
@@ -103,4 +103,4 @@ function settings() {
   );
 }
 
-export default settings;
+export default Settings;
